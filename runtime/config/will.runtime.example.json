@@ -1,0 +1,61 @@
+{
+  "chains": [
+    {
+      "name": "Ethereum",
+      "chain_id": 1,
+      "rpc_url": "https://ethereum-rpc.publicnode.com",
+      "factory_address": "0x0000000000000000000000000000000000000011",
+      "watcher_address": "0x0000000000000000000000000000000000000021"
+    },
+    {
+      "name": "BNB Chain",
+      "chain_id": 56,
+      "rpc_url": "https://bsc-dataseed.bnbchain.org",
+      "factory_address": "0x0000000000000000000000000000000000000012",
+      "watcher_address": "0x0000000000000000000000000000000000000022"
+    },
+    {
+      "name": "Polygon",
+      "chain_id": 137,
+      "rpc_url": "https://polygon-bor-rpc.publicnode.com",
+      "factory_address": "0x0000000000000000000000000000000000000013",
+      "watcher_address": "0x0000000000000000000000000000000000000023"
+    },
+    {
+      "name": "X Layer",
+      "chain_id": 196,
+      "rpc_url": "https://rpc.xlayer.tech",
+      "factory_address": "0x0000000000000000000000000000000000000014",
+      "watcher_address": "0x0000000000000000000000000000000000000024"
+    },
+    {
+      "name": "Arbitrum One",
+      "chain_id": 42161,
+      "rpc_url": "https://arbitrum-one-rpc.publicnode.com",
+      "factory_address": "0x0000000000000000000000000000000000000015",
+      "watcher_address": "0x0000000000000000000000000000000000000025"
+    },
+    {
+      "name": "Base",
+      "chain_id": 8453,
+      "rpc_url": "https://base-rpc.publicnode.com",
+      "factory_address": "0x0000000000000000000000000000000000000016",
+      "watcher_address": "0x0000000000000000000000000000000000000026"
+    }
+  ],
+  "owners": [
+    {
+      "chain_id": 1,
+      "owner": "0xcac3eb8bbdd36ab87bf595f72b5c0c45b75d1335",
+      "label": "Primary wallet"
+    },
+    {
+      "chain_id": 56,
+      "owner": "0xcac3eb8bbdd36ab87bf595f72b5c0c45b75d1335",
+      "label": "Primary wallet"
+    }
+  ],
+  "activity_command_template": "python watcher/activity_adapter.py --owner {owner} --chain-id {chain_id} --begin-ms {begin_ms} --end-ms {end_ms}",
+  "trigger_command_template": "onchainos wallet contract-call --to {will_contract} --chain {chain_id} --input-data {mark_triggered_calldata}",
+  "dry_run": true
+}

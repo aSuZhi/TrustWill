@@ -1,0 +1,32 @@
+{
+  "name": "trustwill-runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Deployment and watcher runtime for the Agentic Wallet will skill",
+  "scripts": {
+    "bootstrap": "node scripts/export-runtime-config.js",
+    "compile": "node scripts/compile-contracts.js",
+    "clean": "node scripts/clean-runtime.js",
+    "test": "node scripts/run-python-tests.js && node scripts/compile-contracts.js",
+    "deploy:ethereum": "node scripts/deploy-will-factory.js --network ethereum",
+    "deploy:bsc": "node scripts/deploy-will-factory.js --network bsc",
+    "deploy:polygon": "node scripts/deploy-will-factory.js --network polygon",
+    "deploy:xlayer": "node scripts/deploy-will-factory.js --network xlayer",
+    "deploy:arbitrum": "node scripts/deploy-will-factory.js --network arbitrum",
+    "deploy:base": "node scripts/deploy-will-factory.js --network base",
+    "watcher:poll": "python watcher/run_watcher.py --config config/will.runtime.json",
+    "watcher:activity": "python watcher/activity_adapter.py",
+    "claim-dapp:serve": "python -m http.server 8787 --directory dapp",
+    "claim-link": "node scripts/generate-claim-link.js",
+    "claim-link:local": "node scripts/prepare-local-claim-link.js"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "chai": "^5.2.1",
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
+    "hardhat": "^3.0.6",
+    "solc": "^0.8.20"
+  }
+}

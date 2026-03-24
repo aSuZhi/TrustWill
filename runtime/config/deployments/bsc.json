@@ -1,0 +1,11 @@
+{
+  "network": "bsc",
+  "label": "BNB Chain",
+  "chainId": 56,
+  "deployedAt": "2026-03-24T10:58:39.751Z",
+  "deployer": "0x32096D71e1432E8fe0a3a972b01585C7e91ef59D",
+  "defaultWatcher": "0x32096D71e1432E8fe0a3a972b01585C7e91ef59D",
+  "willFactory": "0xd170187EF14516B1ebAD777a95f965D2c07B9a41",
+  "deploymentTxHash": "0x97806c0d8e8fc2f47d8d444549f97d96e798905fc2560af9809756e3bbcdc766",
+  "blockNumber": 88447056
+}

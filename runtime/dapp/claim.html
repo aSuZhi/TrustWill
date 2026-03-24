@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrustWill Claim</title>
+  <style>
+    :root {
+      --bg: #f4f1e8;
+      --panel: rgba(255, 251, 242, 0.92);
+      --ink: #1f2937;
+      --muted: #5b6472;
+      --accent: #1e5eff;
+      --accent-2: #ff9f1c;
+      --line: rgba(31, 41, 55, 0.12);
+      --ok: #0f9d58;
+      --warn: #d97706;
+      --bad: #dc2626;
+      --shadow: 0 20px 60px rgba(31, 41, 55, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "PingFang SC", "Noto Sans SC", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(30, 94, 255, 0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(255, 159, 28, 0.16), transparent 28%),
+        linear-gradient(180deg, #faf7ef 0%, #efe7d6 100%);
+      min-height: 100vh;
+      padding: 32px 16px;
+    }
+
+    .shell {
+      max-width: 920px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -80px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(30, 94, 255, 0.18), transparent 70%);
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 6vw, 44px);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .sub {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 720px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: rgba(30, 94, 255, 0.08);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .fact {
+      margin-top: 18px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .fact-row {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .fact-row:last-child {
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .value {
+      font-size: 15px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .mono {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      width: fit-content;
+    }
+
+    .status.active { background: rgba(217, 119, 6, 0.12); color: var(--warn); }
+    .status.triggered { background: rgba(15, 157, 88, 0.12); color: var(--ok); }
+    .status.bad { background: rgba(220, 38, 38, 0.12); color: var(--bad); }
+
+    .token-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .token {
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.64);
+    }
+
+    .actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:disabled { cursor: not-allowed; opacity: 0.5; transform: none; }
+
+    .primary {
+      background: linear-gradient(135deg, var(--accent), #4f7cff);
+      color: white;
+      box-shadow: 0 12px 24px rgba(30, 94, 255, 0.24);
+    }
+
+    .secondary {
+      background: rgba(31, 41, 55, 0.06);
+      color: var(--ink);
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .log {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(17, 24, 39, 0.94);
+      color: #f8fafc;
+      min-height: 72px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .foot {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">TrustWill Claim</div>
+      <h1>受益人领取页</h1>
+      <p class="sub">
+        受益人钱包打开这个页面后，可以直接连接钱包并发起领取。页面会先读取合约当前状态，
+        只有状态已经是 Triggered 时才允许点击领取。
+      </p>
+    </section>
+
+    <section class="grid">
+      <div class="panel">
+        <div class="eyebrow">Claim Context</div>
+        <div class="fact">
+          <div class="fact-row">
+            <div class="label">链</div>
+            <div class="value" id="chainName">-</div>
+          </div>
+          <div class="fact-row">
+            <div class="label">遗嘱合约</div>
+            <div class="value mono" id="willContract">-</div>
+          </div>
+          <div class="fact-row">
+            <div class="label">受益人</div>
+            <div class="value mono" id="beneficiary">-</div>
+          </div>
+          <div class="fact-row">
+            <div class="label">Owner</div>
+            <div class="value mono" id="owner">-</div>
+          </div>
+          <div class="fact-row">
+            <div class="label">状态</div>
+            <div class="value"><span class="status active" id="statusPill">Loading</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="eyebrow">Assets</div>
+        <div class="token-list" id="tokenList"></div>
+        <div class="actions">
+          <button class="secondary" id="connectButton">连接受益人钱包</button>
+          <button class="primary" id="claimButton" disabled>领取已授权资产</button>
+        </div>
+        <div class="note" id="claimHint">
+          连接的钱包应当是受益人地址，并且钱包需要切到目标链后才能发起领取。
+        </div>
+        <div class="log" id="logBox">等待页面初始化…</div>
+      </div>
+    </section>
+
+    <div class="foot">TrustWill beneficiary claim page</div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+  <script>
+    const query = new URLSearchParams(window.location.search);
+    const config = {
+      chainId: Number(query.get("chainId") || "0"),
+      chainName: query.get("chainName") || "Unknown",
+      rpc: query.get("rpc") || "",
+      willContract: query.get("will") || "",
+      beneficiary: (query.get("beneficiary") || "").toLowerCase(),
+      owner: (query.get("owner") || "").toLowerCase(),
+      tokens: (query.get("tokens") || "").split(",").map((item) => item.trim()).filter(Boolean)
+    };
+
+    const WILL_ABI = [
+      "function getWillConfig() view returns (address owner,address beneficiary,uint256 createdAt,uint256 lastTriggerUpdateAt,uint256 triggerAfterSeconds,uint256 monitorWindowSeconds,address watcher,uint8 status,uint256 deadlineTimestamp,bytes32 activityProofRef)",
+      "function getAuthorizedTokens() view returns (address[])",
+      "function claim(address[] tokens) external"
+    ];
+
+    const ERC20_ABI = [
+      "function symbol() view returns (string)",
+      "function balanceOf(address) view returns (uint256)"
+    ];
+
+    const STATUS_LABELS = {
+      0: "Active",
+      1: "Triggered",
+      2: "Cancelled",
+      3: "Claimed"
+    };
+
+    const dom = {
+      chainName: document.getElementById("chainName"),
+      willContract: document.getElementById("willContract"),
+      beneficiary: document.getElementById("beneficiary"),
+      owner: document.getElementById("owner"),
+      statusPill: document.getElementById("statusPill"),
+      tokenList: document.getElementById("tokenList"),
+      connectButton: document.getElementById("connectButton"),
+      claimButton: document.getElementById("claimButton"),
+      claimHint: document.getElementById("claimHint"),
+      logBox: document.getElementById("logBox")
+    };
+
+    let browserProvider = null;
+    let signer = null;
+    let connectedAddress = "";
+    let readProvider = null;
+    let latestStatus = null;
+    let resolvedTokens = [...config.tokens];
+
+    function log(message) {
+      const stamp = new Date().toLocaleTimeString();
+      dom.logBox.textContent = `[${stamp}] ${message}\n` + dom.logBox.textContent;
+    }
+
+    function setStatus(code) {
+      const label = STATUS_LABELS[code] || `Unknown(${code})`;
+      dom.statusPill.textContent = label;
+      dom.statusPill.className = "status";
+      if (code === 1) {
+        dom.statusPill.classList.add("triggered");
+      } else if (code === 0) {
+        dom.statusPill.classList.add("active");
+      } else {
+        dom.statusPill.classList.add("bad");
+      }
+      latestStatus = code;
+      refreshClaimButton();
+    }
+
+    function refreshClaimButton() {
+      const ready =
+        latestStatus === 1 &&
+        connectedAddress &&
+        connectedAddress.toLowerCase() === config.beneficiary &&
+        resolvedTokens.length > 0;
+      dom.claimButton.disabled = !ready;
+    }
+
+    function shortAddress(value) {
+      if (!value) return "-";
+      return `${value.slice(0, 6)}...${value.slice(-4)}`;
+    }
+
+    async function loadReadState() {
+      if (!config.rpc || !config.willContract || !config.beneficiary) {
+        throw new Error("缺少领取页参数");
+      }
+
+      readProvider = new ethers.JsonRpcProvider(config.rpc);
+      const will = new ethers.Contract(config.willContract, WILL_ABI, readProvider);
+      const willConfig = await will.getWillConfig();
+      if (resolvedTokens.length === 0) {
+        try {
+          resolvedTokens = (await will.getAuthorizedTokens()).map((item) => item.toLowerCase());
+          log(`未从链接中拿到 tokens，已从合约读取 ${resolvedTokens.length} 个授权代币`);
+        } catch (error) {
+          log(`读取授权代币失败：${error.message || error}`);
+        }
+      }
+
+      dom.chainName.textContent = `${config.chainName} (${config.chainId})`;
+      dom.willContract.textContent = config.willContract;
+      dom.beneficiary.textContent = config.beneficiary;
+      dom.owner.textContent = config.owner || willConfig.owner;
+      setStatus(Number(willConfig.status));
+
+      dom.tokenList.innerHTML = "";
+      for (const token of resolvedTokens) {
+        const tokenContract = new ethers.Contract(token, ERC20_ABI, readProvider);
+        let symbol = "TOKEN";
+        let balanceText = "-";
+        try {
+          symbol = await tokenContract.symbol();
+        } catch {}
+        try {
+          const balance = await tokenContract.balanceOf(config.owner || willConfig.owner);
+          balanceText = balance.toString();
+        } catch {}
+
+        const item = document.createElement("div");
+        item.className = "token";
+        item.innerHTML = `
+          <div><strong>${symbol}</strong></div>
+          <div class="note mono">${token}</div>
+          <div class="note">当前 owner 余额：${balanceText}</div>
+        `;
+        dom.tokenList.appendChild(item);
+      }
+
+      log(`已读取合约状态：${STATUS_LABELS[Number(willConfig.status)] || willConfig.status}`);
+      if (resolvedTokens.length === 0) {
+        dom.claimHint.textContent = "当前没有可领取的已登记代币，claim 按钮会保持禁用。";
+      }
+    }
+
+    async function connectWallet() {
+      if (!window.ethereum) {
+        throw new Error("没有检测到浏览器钱包，请用受益人钱包内置浏览器打开");
+      }
+
+      browserProvider = new ethers.BrowserProvider(window.ethereum);
+      await browserProvider.send("eth_requestAccounts", []);
+      try {
+        await browserProvider.send("wallet_switchEthereumChain", [{ chainId: ethers.toBeHex(config.chainId) }]);
+      } catch (error) {
+        log(`切链提示：${error.message || error}`);
+      }
+
+      signer = await browserProvider.getSigner();
+      connectedAddress = await signer.getAddress();
+      dom.connectButton.textContent = `已连接 ${shortAddress(connectedAddress)}`;
+
+      if (connectedAddress.toLowerCase() !== config.beneficiary) {
+        dom.claimHint.textContent = `当前连接地址 ${connectedAddress} 不是受益人 ${config.beneficiary}，请切换到受益人钱包后再领取。`;
+      } else {
+        dom.claimHint.textContent = "当前连接的是受益人钱包，可以发起领取。";
+      }
+
+      refreshClaimButton();
+      log(`钱包已连接：${connectedAddress}`);
+    }
+
+    async function claimAssets() {
+      if (!signer) {
+        throw new Error("请先连接受益人钱包");
+      }
+      if (connectedAddress.toLowerCase() !== config.beneficiary) {
+        throw new Error("当前连接的钱包不是受益人地址");
+      }
+      if (latestStatus !== 1) {
+        throw new Error("当前遗嘱还不是 Triggered 状态");
+      }
+      if (resolvedTokens.length === 0) {
+        throw new Error("当前领取页没有可用的代币列表，无法发起 claim");
+      }
+
+      const contract = new ethers.Contract(config.willContract, WILL_ABI, signer);
+      dom.claimButton.disabled = true;
+      log("正在发起领取交易…");
+      const tx = await contract.claim(resolvedTokens);
+      log(`领取交易已提交：${tx.hash}`);
+      await tx.wait();
+      log("领取交易已确认");
+      await loadReadState();
+      refreshClaimButton();
+    }
+
+    dom.connectButton.addEventListener("click", async () => {
+      try {
+        await connectWallet();
+      } catch (error) {
+        log(error.message || String(error));
+      }
+    });
+
+    dom.claimButton.addEventListener("click", async () => {
+      try {
+        await claimAssets();
+      } catch (error) {
+        log(error.message || String(error));
+        refreshClaimButton();
+      }
+    });
+
+    loadReadState().catch((error) => {
+      log(error.message || String(error));
+      setStatus(-1);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agentic Wallet Will"
+  short_description: "Create and manage ERC-20 inheritance wills"
+  default_prompt: "Use $agentic-wallet-will as a guided conversational flow to create, inspect, modify, cancel, or claim an OKX Agentic Wallet will contract."

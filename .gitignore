@@ -1,0 +1,25 @@
+# Node / package managers
+**/node_modules/
+npm-debug.log*
+
+# Environment and secrets
+runtime/.env
+runtime/.env.local
+runtime/.env.*.local
+
+# Python
+**/__pycache__/
+**/*.pyc
+
+# Runtime artifacts
+runtime/artifacts-local/
+runtime/.hardhat-home/
+
+# Local logs
+runtime/*.log
+runtime/claim-dapp.log
+runtime/claim-dapp.err.log
+
+# Generated runtime state
+runtime/config/will.runtime.json
+

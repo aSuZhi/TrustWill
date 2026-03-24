@@ -1,0 +1,11 @@
+{
+  "network": "xlayer",
+  "label": "X Layer",
+  "chainId": 196,
+  "deployedAt": "2026-03-24T11:29:06.636Z",
+  "deployer": "0x32096D71e1432E8fe0a3a972b01585C7e91ef59D",
+  "defaultWatcher": "0x32096D71e1432E8fe0a3a972b01585C7e91ef59D",
+  "willFactory": "0x6E2C11e523DF6fb508b4Fb99B950e0d4aB188929",
+  "deploymentTxHash": "0xe022a4a66cf3f6d5b69f713fe63c39756609b9f098aa9ff145021d5c5cd218eb",
+  "blockNumber": 55582706
+}
