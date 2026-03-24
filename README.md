@@ -12,6 +12,7 @@ Natural-language will / trust skill for OKX Agentic Wallet.
 - Add new ERC-20 holdings into the will
 - Cancel a will and revoke token approvals
 - Generate a beneficiary claim link after the will is triggered
+- Use a user-configured watcher instead of a shared default platform watcher
 
 - 用自然语言创建遗嘱合约
 - 查看当前绑定的信托 / 遗嘱
@@ -19,6 +20,7 @@ Natural-language will / trust skill for OKX Agentic Wallet.
 - 把新的 ERC-20 持仓加入遗嘱
 - 取消遗嘱并撤销授权
 - 在遗嘱触发后为受益人生成领取链接
+- 使用用户自己配置的 watcher，而不是共享默认平台 watcher
 
 ## Repository Layout / 仓库结构
 
@@ -84,7 +86,9 @@ Current compatibility boundary:
 - v1 focuses on EVM + ERC-20 flows
 - Native gas tokens are not auto-included
 - Public RPCs are okay for testing, but dedicated RPCs are better for production
+- Before creating a will, the user should configure their own watcher address and private key locally
 
 - v1 主要支持 EVM + ERC-20
 - 原生 gas 币不会自动纳入
 - 公共 RPC 适合测试，生产环境建议使用专用 RPC
+- 创建遗嘱前，用户需要先在本地配置自己的 watcher 地址和私钥

@@ -16,6 +16,18 @@ Assistant:
 
 `可以。我会先帮你确认触发时间、受益地址，再检查当前钱包里可纳入遗嘱的 ERC-20 资产。这个 v1 版本只覆盖 ERC-20，不包含原生 ETH/BNB。触发时间可以用分钟、小时或天。`
 
+### Watcher preflight before create
+
+Assistant:
+
+`创建前还需要先完成 watcher 配置。这个版本不再使用默认平台 watcher，而是使用你自己配置的 watcher 地址和私钥。
+
+- 你需要先在 runtime/.env 里配置 `WATCHER_ADDRESS`
+- 同时配置与该地址对应的 `DEPLOYER_PRIVATE_KEY`
+- 如果要在 BNB Chain 等链上自动触发，还需要给这个 watcher 钱包准备少量 gas
+
+等 watcher 配置好后，我再继续创建合约。`
+
 ### Missing trigger days
 
 Assistant:
@@ -42,6 +54,7 @@ Assistant:
 
 - 触发时间：{trigger_days} 天
 - 触发条件：到期前最后一段监控窗口无 Agentic Wallet 主动操作
+- watcher 地址：{watcher_address}
 - 受益地址：{beneficiary}
 - 覆盖链：{chains}
 - 将纳入遗嘱的 ERC-20：{token_summary}
@@ -58,6 +71,7 @@ Assistant:
 
 - 触发时间：{trigger_days} 天
 - 触发条件：到期前最后一段监控窗口无 Agentic Wallet 主动操作
+- watcher 地址：{watcher_address}
 - 受益地址：{beneficiary}
 - 覆盖链：{chains}
 - 当前纳入遗嘱的 ERC-20：暂无，创建后你可以再追加授权

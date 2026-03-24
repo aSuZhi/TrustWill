@@ -12,7 +12,7 @@ Create and manage a per-chain will contract for the currently logged-in OKX Agen
 - Supported chains in v1: Ethereum (`1`), BNB Chain (`56`), Polygon (`137`), X Layer (`196`), Arbitrum One (`42161`), Base (`8453`)
 - Supported assets in v1: current ERC-20 holdings with non-zero balance and non-empty token contract address
 - Unsupported in v1: native `ETH/BNB/OKB/MATIC`, Solana, auto-covering future tokens without another approval pass
-- Trigger rule is: the will becomes triggerable when the configured deadline is reached and the platform watcher observed no Agentic Wallet initiated activity in the final monitoring window before the deadline
+- Trigger rule is: the will becomes triggerable when the configured deadline is reached and the user-configured watcher observed no Agentic Wallet initiated activity in the final monitoring window before the deadline
 - The monitoring window is derived automatically from the trigger duration. Long durations can use up to 7 days; short test durations shrink automatically so minute-level testing is possible
 - Query flows must aggregate across all configured chains by default
 - Cancel flows must default to `cancelWill` plus revoking every registered token approval back to `0`
@@ -32,9 +32,17 @@ Create and manage a per-chain will contract for the currently logged-in OKX Agen
 1. Confirm the user is logged in with `onchainos wallet status`
 2. If not logged in, follow the auth flow in `../okx-agentic-wallet/SKILL.md`
 3. Before using runtime scripts in a fresh environment, make sure `runtime/node_modules` exists. If it does not, run `npm install` inside `runtime/` once
-4. Prefer bundled deployment metadata in `runtime/config/deployments/` for supported chains. Users should not be asked to deploy contracts during normal use if platform deployments already exist
-5. Before inspect/create/update/cancel/claim, make sure `runtime/config/will.runtime.json` exists for the current logged-in wallet. If it is missing or stale, regenerate it with `npm run bootstrap` inside `runtime/`
-6. Never guess contract addresses. Read them from the config file
+4. Before any create flow, require the user to configure their own watcher address and watcher private key in `runtime/.env`
+5. Prefer bundled deployment metadata in `runtime/config/deployments/` for supported chains. Users should not be asked to deploy contracts during normal use if chain deployments already exist
+6. Before inspect/create/update/cancel/claim, make sure `runtime/config/will.runtime.json` exists for the current logged-in wallet. If it is missing or stale, regenerate it with `npm run bootstrap` inside `runtime/`
+7. Never guess contract addresses. Read them from the config file
+
+Watcher preflight requirements before create:
+
+- `WATCHER_ADDRESS` must be a valid EVM address
+- `DEPLOYER_PRIVATE_KEY` must correspond to that watcher address
+- the watcher wallet must have enough gas on the target chain(s) to later call `markTriggered`
+- if this preflight fails, do not create the will yet; explain the missing watcher setup first
 
 ## Conversational Mode
 

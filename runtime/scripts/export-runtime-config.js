@@ -77,11 +77,22 @@ function loadDeployment(networkName) {
   return JSON.parse(fs.readFileSync(deploymentPath, "utf8"));
 }
 
+function resolveWatcherAddress(args) {
+  const watcher = args.watcher || process.env.WATCHER_ADDRESS;
+  if (!watcher || !/^0x[a-fA-F0-9]{40}$/.test(watcher)) {
+    throw new Error(
+      "Missing or invalid watcher address. Set WATCHER_ADDRESS in runtime/.env or pass --watcher <0x...> before bootstrapping."
+    );
+  }
+  return watcher;
+}
+
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const outputPath = path.join(process.cwd(), "config", "will.runtime.json");
   const activityAdapterPath = path.join(process.cwd(), "watcher", "activity_adapter.py");
   const triggerScriptPath = path.join(process.cwd(), "scripts", "trigger-will.js");
+  const watcherAddress = resolveWatcherAddress(args);
   const chains = [];
   for (const [networkName, metadata] of Object.entries(DEFAULT_CHAINS)) {
     const deployment = loadDeployment(networkName);
@@ -93,7 +104,7 @@ function main() {
       chain_id: metadata.chain_id,
       rpc_url: process.env[metadata.rpc_env] || `set-${metadata.rpc_env}`,
       factory_address: deployment.willFactory,
-      watcher_address: deployment.defaultWatcher
+      watcher_address: watcherAddress
     });
   }
 

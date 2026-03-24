@@ -1,19 +1,21 @@
 # Agentic Wallet Will Runtime / Agentic Wallet 链上遗嘱运行层
 
-This runtime powers the `agentic-wallet-will` skill: deployment, config bootstrap, watcher execution, and beneficiary claim-link generation.
+This runtime powers the `agentic-wallet-will` skill: deployment, config bootstrap, self-hosted watcher execution, and beneficiary claim-link generation.
 
-这个 runtime 是 `agentic-wallet-will` skill 的运行层，负责合约部署、配置生成、watcher 触发，以及受益人领取链接生成。
+这个 runtime 是 `agentic-wallet-will` skill 的运行层，负责合约部署、配置生成、自托管 watcher 触发，以及受益人领取链接生成。
 
 ## What It Does / 它能做什么
 
 - Create per-user will / trust contracts on supported EVM chains
 - Support natural-language flows in the skill: create, inspect, modify, cancel, add assets, and claim
 - Monitor inactivity and mark a will as `Triggered`
+- Let each user run their own watcher signer instead of relying on a shared platform watcher
 - Generate a beneficiary claim page link for local preview or public hosting
 
 - 在支持的 EVM 链上为每个用户创建独立遗嘱 / 信托合约
 - 支持 skill 的自然语言流程：创建、查看、修改、取消、追加资产、受益人领取
 - 监控 inactivity 条件并把遗嘱状态切到 `Triggered`
+- 让每个用户运行自己的 watcher signer，而不是依赖共享平台 watcher
 - 为受益人生成本地或公网领取页面链接
 
 ## Current Scope / 当前范围
@@ -82,13 +84,13 @@ Typical fields:
 
 常见字段：
 
-- `DEPLOYER_PRIVATE_KEY`: deployer or watcher signer private key
-- `WATCHER_ADDRESS`: the on-chain address allowed to call `markTriggered`
+- `DEPLOYER_PRIVATE_KEY`: the private key of your own watcher signer
+- `WATCHER_ADDRESS`: your own watcher address written into newly created wills
 - `*_RPC_URL`: per-chain RPC endpoints
 - `CLAIM_DAPP_BASE_URL`: optional public claim page base URL
 
-- `DEPLOYER_PRIVATE_KEY`：部署或 watcher 执行钱包私钥
-- `WATCHER_ADDRESS`：链上允许调用 `markTriggered` 的地址
+- `DEPLOYER_PRIVATE_KEY`：你自己的 watcher 签名钱包私钥
+- `WATCHER_ADDRESS`：写入新遗嘱合约中的你自己的 watcher 地址
 - `*_RPC_URL`：各链 RPC 地址
 - `CLAIM_DAPP_BASE_URL`：可选的公网领取页地址
 
@@ -101,6 +103,18 @@ Security note:
 
 - 不要把真实私钥放在 `.env.example`
 - 任何暴露过的私钥都应视为已泄露并立即更换
+
+Watcher note:
+
+Watcher 说明：
+
+- This runtime now assumes a self-hosted watcher model
+- Before creating a will, the user should configure their own `WATCHER_ADDRESS` and matching `DEPLOYER_PRIVATE_KEY`
+- The watcher wallet must later have enough gas on every chain where automatic triggering is expected
+
+- 当前 runtime 默认采用自托管 watcher 模式
+- 创建遗嘱前，用户需要先配置自己的 `WATCHER_ADDRESS` 和对应的 `DEPLOYER_PRIVATE_KEY`
+- 如果希望某条链能自动触发，该 watcher 钱包后续必须在那条链上有足够 gas
 
 ## Operator Flow / 平台初始化流程
 
@@ -148,9 +162,9 @@ This generates:
 
 - `config/will.runtime.json`
 
-The bootstrap script will try to auto-detect the currently logged-in Agentic Wallet owner if possible.
+The bootstrap script will try to auto-detect the currently logged-in Agentic Wallet owner if possible, but it now also requires a valid watcher address in `runtime/.env`.
 
-如果环境允许，bootstrap 会尝试自动识别当前已登录的 Agentic Wallet 地址作为 owner。
+如果环境允许，bootstrap 会尝试自动识别当前已登录的 Agentic Wallet 地址作为 owner，但现在也会要求你先在 `runtime/.env` 里配置有效的 watcher 地址。
 
 ### 4. Run the Watcher / 启动 watcher
 
@@ -164,9 +178,9 @@ watcher 会检查遗嘱是否已到期，以及监控窗口内是否没有符合
 
 ## End User Flow / 终端用户流程
 
-After factories are deployed and runtime config exists, ordinary users should not need to think about deployment.
+After factories are deployed and runtime config exists, users can create wills without redeploying contracts, but they do need to think about their own watcher configuration.
 
-在工厂合约部署好、runtime 配置存在之后，普通用户不需要关心部署细节。
+在工厂合约部署好、runtime 配置存在之后，用户不需要重复部署合约，但仍需要先完成自己的 watcher 配置。
 
 The intended natural-language flow is:
 

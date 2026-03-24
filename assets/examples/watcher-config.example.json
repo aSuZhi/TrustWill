@@ -5,42 +5,42 @@
       "chain_id": 1,
       "rpc_url": "https://eth-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000011",
-      "watcher_address": "0x0000000000000000000000000000000000000021"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     },
     {
       "name": "BNB Chain",
       "chain_id": 56,
       "rpc_url": "https://bsc-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000012",
-      "watcher_address": "0x0000000000000000000000000000000000000022"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     },
     {
       "name": "Polygon",
       "chain_id": 137,
       "rpc_url": "https://polygon-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000013",
-      "watcher_address": "0x0000000000000000000000000000000000000023"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     },
     {
       "name": "X Layer",
       "chain_id": 196,
       "rpc_url": "https://xlayer-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000014",
-      "watcher_address": "0x0000000000000000000000000000000000000024"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     },
     {
       "name": "Arbitrum One",
       "chain_id": 42161,
       "rpc_url": "https://arbitrum-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000015",
-      "watcher_address": "0x0000000000000000000000000000000000000025"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     },
     {
       "name": "Base",
       "chain_id": 8453,
       "rpc_url": "https://base-mainnet.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000016",
-      "watcher_address": "0x0000000000000000000000000000000000000026"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     }
   ],
   "owners": [

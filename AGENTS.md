@@ -18,7 +18,7 @@ Use:
 - `runtime/.env` for local private keys and operator-only settings
 - `runtime/.env.example` as the public template
 
-Typical operator-managed values:
+Typical user-managed values:
 
 - `DEPLOYER_PRIVATE_KEY`
 - `WATCHER_ADDRESS`
@@ -32,5 +32,5 @@ The plugin exports `openclawPlugin` from `flake.nix`, but the JavaScript runtime
 ## Safe defaults
 
 - End users should reuse predeployed factory contracts when available
-- End users should not be asked to deploy contracts during normal will creation
-- Platform operators can deploy additional chains locally with their own `.env`
+- End users should configure their own watcher address and signer locally before creating a will
+- Additional chains can still be deployed locally with the user's own `.env`

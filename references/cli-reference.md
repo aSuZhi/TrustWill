@@ -22,6 +22,12 @@ This writes `config/will.runtime.json` by:
 - reading bundled deployment metadata
 - auto-detecting the logged-in EVM wallet address
 - filling that address into every configured supported chain
+- filling your own configured watcher address into every configured supported chain
+
+Before running bootstrap, make sure `runtime/.env` contains:
+
+- `WATCHER_ADDRESS=<your watcher address>`
+- `DEPLOYER_PRIVATE_KEY=<the private key for that watcher address>`
 
 Required JSON shape:
 
@@ -33,7 +39,7 @@ Required JSON shape:
       "chain_id": 1,
       "rpc_url": "https://rpc.example.invalid",
       "factory_address": "0x0000000000000000000000000000000000000001",
-      "watcher_address": "0x0000000000000000000000000000000000000002"
+      "watcher_address": "0x1111111111111111111111111111111111111111"
     }
   ],
   "owners": [
@@ -98,6 +104,17 @@ Approval states:
 - `missing`: allowance is zero
 
 ## Create A Will
+
+### 0. Watcher preflight
+
+Before creating a will, first configure your own watcher locally:
+
+```bash
+WATCHER_ADDRESS=0x3333333333333333333333333333333333333333
+DEPLOYER_PRIVATE_KEY=0x...
+```
+
+The watcher address written into the contract must match the signer private key you will later use for `markTriggered`.
 
 ### 1. Encode `createWill`
 
