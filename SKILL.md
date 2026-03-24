@@ -31,9 +31,10 @@ Create and manage a per-chain will contract for the currently logged-in OKX Agen
 
 1. Confirm the user is logged in with `onchainos wallet status`
 2. If not logged in, follow the auth flow in `../okx-agentic-wallet/SKILL.md`
-3. Prefer bundled deployment metadata in `runtime/config/deployments/` for supported chains. Users should not be asked to deploy contracts during normal use if platform deployments already exist
-4. Before inspect/create/update/cancel/claim, make sure `runtime/config/will.runtime.json` exists for the current logged-in wallet. If it is missing or stale, regenerate it with `npm run bootstrap` inside `runtime/`
-5. Never guess contract addresses. Read them from the config file
+3. Before using runtime scripts in a fresh environment, make sure `runtime/node_modules` exists. If it does not, run `npm install` inside `runtime/` once
+4. Prefer bundled deployment metadata in `runtime/config/deployments/` for supported chains. Users should not be asked to deploy contracts during normal use if platform deployments already exist
+5. Before inspect/create/update/cancel/claim, make sure `runtime/config/will.runtime.json` exists for the current logged-in wallet. If it is missing or stale, regenerate it with `npm run bootstrap` inside `runtime/`
+6. Never guess contract addresses. Read them from the config file
 
 ## Conversational Mode
 
